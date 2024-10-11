@@ -4,6 +4,9 @@ import gspread
 from google.oauth2.service_account import Credentials
 import logging
 from datetime import datetime
+import pytz
+
+timezone = pytz.timezone('Asia/Bangkok')
 
 st.set_page_config(
     page_title="TPK PMO Integrations", 
@@ -97,6 +100,8 @@ else:
                 df_truck_info = pd.DataFrame(truck_info.items(), columns=['Detail', 'Value'])
                 st.table(df_truck_info)
 
+                current_time = datetime.now(timezone).strftime("%Y-%m-%d %H:%M:%S")
+
                 if st.button("Check-in"):
                     logging.debug("Check-in button pressed.")
                     row = df[df['truck_id'] == truck_id].index
@@ -107,7 +112,7 @@ else:
                             logging.warning(f"Check-in blocked for truck {truck_id} with existing status: '{current_status}'")
                         else:
                             user_id = st.session_state.user_id
-                            current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                            current_time = datetime.now(timezone).strftime("%Y-%m-%d %H:%M:%S")
                             eta_time = pd.to_datetime(truck_data.iloc[0]['eta_ts'])
                             current_time_obj = pd.to_datetime(current_time)
 
@@ -146,8 +151,9 @@ else:
             
             if submit_button:
                 logging.debug(f"Submit button pressed for replace, checking replacement truck ID: {replace_truck_id}")
-                current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                
+                current_time = datetime.now(timezone).strftime("%Y-%m-%d %H:%M:%S")
+                logging.debug(f"Current time: {current_time}")
+                    
                 if replace_truck_id in df['truck_id'].values:
                     truck_data = df[df['truck_id'] == replace_truck_id]
                     current_status = truck_data.iloc[0]['status']
@@ -170,21 +176,21 @@ else:
                             replace_truck_id,
                             user_id  
                         ]
-                    try:
-                        main_sheet.append_row(new_row)
-                        row_A = df[df['truck_id'] == replace_truck_id].index         
-                        if not row_A.empty:
-                            main_sheet.update_cell(row_A[0] + 2, df.columns.get_loc('status') + 1, f"replace_by_{new_truck_id}")
-        
-                            st.success(f"New truck {new_truck_id} successfully logged as a replacement for {replace_truck_id}. Status updated to 'replace_by_{new_truck_id}', updated by {user_id}.")
-                            logging.info(f"New truck {new_truck_id} logged for replacement of {replace_truck_id}, status updated to 'replace_by_{new_truck_id}', updated by {user_id}.") 
-                                   
-                    except Exception as e:
-                        st.error(f"Failed to log new truck: {e}")
-                        logging.error(f"Failed to log new truck for {replace_truck_id}: {e}")
+                            
+                        try:
+                            main_sheet.append_row(new_row)
+                            row_A = df[df['truck_id'] == replace_truck_id].index         
+                            if not row_A.empty:
+                                main_sheet.update_cell(row_A[0] + 2, df.columns.get_loc('status') + 1, f"replace_by_{new_truck_id}")
+            
+                                st.success(f"New truck {new_truck_id} successfully logged as a replacement for {replace_truck_id}. Status updated to 'replace_by_{new_truck_id}', updated by {user_id}.")
+                                logging.info(f"New truck {new_truck_id} logged for replacement of {replace_truck_id}, status updated to 'replace_by_{new_truck_id}', updated by {user_id}.") 
+                                    
+                        except Exception as e:
+                            st.error(f"Failed to log new truck: {e}")
+                            logging.error(f"Failed to log new truck for {replace_truck_id}: {e}")
                 else:
                     st.error("Replacement Truck ID not found in records.")
-                    logging.warning(f"Replacement Truck ID {replace_truck_id} not found in records.")
 
 st.markdown(
     """

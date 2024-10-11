@@ -1,0 +1,20 @@
+# Virtual Environment
+.venv/
+
+# Secrets and Environment Variables
+secrets.toml
+.env
+
+# Log files
+*.log
+
+# Python cache
+__pycache__/
+*.pyc
+
+# VS Code
+.vscode/
+
+# System files
+.DS_Store
+Thumbs.db

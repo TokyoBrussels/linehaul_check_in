@@ -9,16 +9,17 @@ Status
 BizCase
 
 Check-In
- 1. Truck plan have 2 trips plan both are not yet check-in. [Q]: 2nd can update after 1st have been checked-in?
- 2. Truck plan have 2 trips plan but 1st trip already checked-in. [Resolved]
- 3. Truck plan which already checked-in but need to check-in again without plan update. [Admin] Can't check-in unless new plan update?
- 4. Truck plan which already checked-in but need to replace by another truck.[Admin] 
+ 1. Truck plan have 2 trips plan both are not yet check-in. [Test]: Can check-in only one can active any action to 2nd. [Q]: 2nd can update after 1st have been checked-in? 
+ 2. Truck plan have 2 trips plan but 1st trip already checked-in. [Test]: Can't check-in for 2nd.ไ
+ 3. Truck plan which already checked-in but need to check-in again without plan update. [Test] Can't check-in because it's always detected 1st check-in.
+ 4. Truck plan which already checked-in but need to replace by another truck.[Test]: Can't alter any detail of data except admin. 
 
 
 Replacement
 
- 1. Truck plan with 2 trips plan both didn't check-in but the 2nd round need replace by other. [Related_Check_In_1]
- 2. The replacement truck have already check-in.[Duplicate]
+ 1. Truck plan with 2 trips plan both didn't check-in but the 2nd round need replace by other. [Test] Can replace either one, Can't pick specific trips.
+ 2. The replacement truck have already check-in.[Duplicate] [Resolved]
+ 3. Require to filled every text box inform for submit [Pending]
 
 Other
 
@@ -40,3 +41,4 @@ Admin Feature Requirement
 
 Notification Feature?
 
+Issue: there are duplicate truck id it's always detect only one, is it possible to set the priority like if it detect 2 row with duplicate truck id get only the row with not yet update any status, like when i find truck id A = there is 2 truck id with A in the sheets, one already have status just pick another one if it both not update any status just get only the first one like 1st truck id A at with no status at the row 1 while 2nd of truck id A at the row 2, just get first one, the same case if it both have status i need to display the 1st one as well. in case there 3 duplicate use the same logic too.

@@ -39,6 +39,4 @@ Admin Feature Requirement
             On Time Check-In
             Replace Check-In
 
-Notification Feature?
-
-Issue: there are duplicate truck id it's always detect only one, is it possible to set the priority like if it detect 2 row with duplicate truck id get only the row with not yet update any status, like when i find truck id A = there is 2 truck id with A in the sheets, one already have status just pick another one if it both not update any status just get only the first one like 1st truck id A at with no status at the row 1 while 2nd of truck id A at the row 2, just get first one, the same case if it both have status i need to display the 1st one as well. in case there 3 duplicate use the same logic too.
+Notification Feature: 
